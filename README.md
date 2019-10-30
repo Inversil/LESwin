@@ -4,7 +4,7 @@ LES on windows is a compiled ahk script.
 In order to run the source code, install Auto Hotkey from https://www.autohotkey.com
 
 This git is for looking around and potentially adding changes; If people do something cool I'll definitely include it in the main dist.
-There’s documentation included inside the source code. The resources are included as well.
+There’s documentation included inside the source code.
 CompileAHK can be used to replicate the compiled master version of LES.
 
 I'm not sure if this is the best approach for this, so let me know if you want me to set this up differently.
