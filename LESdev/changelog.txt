@@ -169,7 +169,7 @@ The show automation lanes shortcut now also works even if you're using Live in d
 
 --Release 1.2.2--
 
-WINDOWS:
+++WINDOWS++
 Improved 10.1 compatibility
 Slightly better menu performance since 1.2.2
 You can now close VST3 container windows with Ctrl + W (and Ctrl + Alt + W)
@@ -186,8 +186,19 @@ Place track marker (Alt + L) now works on all languages
 Added a fallback shortcut for opening the plugin menu (Cmd + Shift + H)
 
 --1.3--
+
+LES is now open source; and all the source code has been documented using comments.
+https://github.com/LESwin
+https://github.com/LESosx
+
+WINDOWS:
+
 Fixed middle click to pan on logitech office mice, including all mice in the MX master series.
 the search query is now always properly cleared, even when loading large vsts; without using the overly complicated bookmark feature.
+the "strict time" setting is now stored across sessions
+LES now warns you when users when it is executed from within the temp folder
+piano roll detection should now misdetect slightly less
+
 Added Buplicate!
 	- Use Ctrl + B to duplicate something 7 times! Press Ctrl + B again on the same element duplicate again 8 times!
 	- Quickly duplicate an initial single clip in blocks of Eight
@@ -198,7 +209,7 @@ it's time for VST specific shortcuts!
 Xfer Serum:
 	- use the 1,2,3 and 4 key to switch tabs between osc, fx, matrix and global respectively.
 
-Fabfilter Pro Q 3:
+Fabfilter Pro Q 3 (vst2, or vst3 without custom resizing):
 	- For some reason Ableton Live doesn't properly communicate undo's to pro Q. This macro fixes undo and redo actions inside the plugin by remapping the undo and redo shortcuts to click the buttons at the top.
 	- Since I'm not a magician, the undos and redos will behave jank as usual when the plugin window is unfocussed.
 
@@ -226,7 +237,6 @@ Enter "kilohearts" to enable the shortcuts.
 	Use Alt + O to add an output.
 	
 	Use Alt + L to add an LFO
-	Use Alt + E to add an Envelope
 
 VST specific shortcuts can be toggled on and off in the settings.
 Ctrl + F1 or the PAUSE key can be used to toggle LES functionality on and off with ease.
@@ -237,3 +247,46 @@ Added more safety checks to shortcuts so you can't trigger them out of context a
 Removed "superspeedmode" from the settings. LES has been stable enough for a while to the point that it's no longer nescesary to have a toggle for this.
 Removed the safe automation open shortcut. Changes to the 10.1 context menus cause it to malfunction too often.
 Changed a japanese word in the black midi easter egg joke so it means "death" rather than telling the users to "die"
+
+
+++MACOS++
+
+Fixed unintentional behavior where single character menu items would be cleared
+Added more safety checks to shortcuts so you can't trigger them out of context as much.
+Added a safeguard for if a different type of quote character is used in the menuconfig file
+Removed the safe automation open shortcut. Changes to the 10.1 context menus cause it to malfunction too often.
+Performance improvements to all shortcuts related to mouse movement
+Updated the main build to Hammerspoon 0.9.76, allowing LES to be used on MacOS catalina.
+fixed a bug where hitting "strict time" would add a check the wrong menu item in the menubar menu
+the "strict time" setting is now stored across reloads.
+the bookmark feature now works in windowed mode
+
+Added Buplicate!
+	- Use Cmd + B to duplicate something 7 times! Press Ctrl + B again on the same element duplicate again 8 times!
+	- Quickly duplicate an initial single clip in blocks of Eight
+	- It's more useful than you'd think
+
+Cmd + can be used to toggle LES functionality on and off with ease.
+	- you can toggle LES off if a VST shortcut is conflicting with something else you want to do
+
+it's time for VST specific shortcuts!
+
+Xfer Serum:
+	- use the 1,2,3 and 4 key to switch tabs between osc, fx, matrix and global respectively.
+
+Fabfilter Pro Q 3 (vst2, or vst3 without custom resizing):
+	- For some reason Ableton Live doesn't properly communicate undo's to pro Q 3. This macro fixes undo and redo actions inside the plugin by remapping the undo and redo shortcuts to click the buttons at the top.
+	- Since I'm not a magician, the undos and redos will behave jank as usual when the plugin window is unfocussed.
+
+Kick 2:
+	- The same thing as pro-q, except for Kick 2
+
+Sylenth1:
+	- use the 1 and 2 keys to switch between A and B tabs. (Although it's a toggle so you can also just hit 1 constantly)
+
+Massive:
+	- Use keys 1 through 5 to mute and unmute oscillators 1 through 5 (this includes PM/RM and noise)
+
+VST specific shortcuts can be toggled on and off in the settings.
+Cmd + 1 can be used to toggle LES functionality on and off with ease.
+	- you can toggle LES off if a VST shortcut is conflicting with something else you want to do

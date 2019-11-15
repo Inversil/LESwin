@@ -153,7 +153,7 @@ exitapp
 }
 }
 
-if InStr(%A_ScriptDir%, "Windows\Temp") or InStr(%A_ScriptDir%, "\AppData\Local\Temp"){
+if InStr(splitPath A_ScriptDir, "Windows\Temp") or InStr(splitPath A_ScriptDir, "\AppData\Local\Temp"){
 MsgBox,48,Live Enhancement Suite, % "You executed LES from within your file extraction software.`nThis placed it inside of a temporary cache folder, which will cause it to be deleted by Windows' cleanup routine.`nPlease extract LES into its own folder before proceeding."
 exitapp
 }
@@ -668,8 +668,8 @@ if(vstshortcuts = 1){
 		Hotkey, ~!l, phaseplantl
 	}
 
-	Hotkey, ~^z, VSTundo
-	Hotkey, ~^y, VSTredo
+	Hotkey, ^z, VSTundo
+	Hotkey, ^y, VSTredo
 }
 
 }
@@ -788,7 +788,7 @@ SetTitleMatchMode, 2
 WinGetPos, wx, wy, wWidth, wHeight, Ableton Live
 coolvar := ((wHeight/3.5) + wy)
 coolvar2 := (wHeight - 100 + wy)
-coolvar3 := ((wWidth/2) + wx)
+coolvar3 := ((wWidth/2.6) + wx)
 if (!MX && !MY)
 MouseGetPos, MX, MY
 if (pianosearch = 1){
@@ -1163,7 +1163,7 @@ If (resetbrowsertobookmark = 1){ ;this is a feature barely anyone uses, but you 
 }
 SendInput, {Esc}
 SetTitleMatchMode, RegEx
-WinWaitActive, ahk_class (AbletonVstPlugClass|Vst3PlugWindow),,1
+WinWaitActive, ahk_class (AbletonVstPlugClass|Vst3PlugWindow),,8
 WinGetTitle, piss, ahk_class (AbletonVstPlugClass|Vst3PlugWindow)
 if (piss != "") {
 	SetTitleMatchMode, 2
@@ -2007,8 +2007,10 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 		yea1 := ""
 		yea2 := ""
 		mousemove, posX, posY
+		Return
 	}
 }
+sendinput {ctrl down}{z}{ctrl up}
 ; my own dimension quotients (can be added to later!)
 ; mini 1.967914
 ; small 1.569444
@@ -2065,8 +2067,10 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 		yea1 := ""
 		yea2 := ""
 		mousemove, posX, posY
+		Return
 	}
 }
+sendinput {ctrl down}{z}{ctrl up}
 Return
 
 ;-----------------------------------;
