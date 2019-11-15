@@ -188,8 +188,8 @@ Added a fallback shortcut for opening the plugin menu (Cmd + Shift + H)
 --1.3--
 
 LES is now open source; and all the source code has been documented using comments.
-https://github.com/LESwin
-https://github.com/LESosx
+https://github.com/inversil/LESwin
+https://github.com/inversil/LESosx
 
 WINDOWS:
 
