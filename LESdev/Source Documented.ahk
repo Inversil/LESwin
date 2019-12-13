@@ -16,7 +16,7 @@ Internal_Name=Live Enhancement Suite
 Legal_Copyright=© 2019
 Original_Filename=Live Enhancement Suite
 Product_Name=Live Enhancement Suite
-Product_Version=0.1.2.3
+Product_Version=0.1.3.0
 [ICONS]
 Icon_1=%In_Dir%\resources\blueico.ico
 Icon_2=%In_Dir%\resources\blueico.ico
@@ -29,7 +29,6 @@ Icon_5=%In_Dir%\resources\redico.ico
 
 ; ^^^^^^^^^^^^^^^^^^
 ; this stuff up here are settings I use to compile the EXE file; appointing icons.. etc.
-
 
 ; Ok so, just to mentally prepare you: this source code is a complete mess. 
 ; I only really got into programming while writing this, so there's just dumb stuff happening all over.
@@ -788,7 +787,7 @@ SetTitleMatchMode, 2
 WinGetPos, wx, wy, wWidth, wHeight, Ableton Live
 coolvar := ((wHeight/3.5) + wy)
 coolvar2 := (wHeight - 100 + wy)
-coolvar3 := ((wWidth/2.6) + wx)
+coolvar3 := ((wWidth/3.4) + wx)
 if (!MX && !MY)
 MouseGetPos, MX, MY
 if (pianosearch = 1){
@@ -797,6 +796,7 @@ if (pianosearch = 1){
 	if (Errorlevel = 0){
 		Imagesearch, a1, b1, x1, (y1 + 5), x1, (y1 + 105), %A_ScriptDir%\resources\pianoblack.png
 		if (Errorlevel = 0){
+			;mousemove, coolvar3, 500
 			Menu, pianomenu, Show, % MX, % MY
 			Return
 			}
@@ -810,6 +810,7 @@ if (pianosearch = 1){
 	if (Errorlevel = 0){
 		Imagesearch, a1, b1, x1, (y1 + 5), x1, (y1 + 105), %A_ScriptDir%\resources\pianoblack.png
 		if (Errorlevel = 0){
+			;mousemove, coolvar3, 500
 			Menu, pianomenu, Show, % MX, % MY
 			Return
 			}
@@ -887,9 +888,11 @@ pause::
 ^F1::
     Suspend, Permit
 	if (A_IsPaused = 1){
+		;traytip, "Live Enhancement Suite", "LES is unpaused", 0.1, 16
 		Menu, Tray, Rename, Unpause && Unsuspend, Pause && Suspend
 	}
 	Else{
+		;traytip, "Live Enhancement Suite", "LES is paused", 0.1, 16
 		Menu, Tray, Rename, Pause && Suspend, Unpause && Unsuspend
 	}
     Pause, Toggle, 1
@@ -1163,12 +1166,24 @@ If (resetbrowsertobookmark = 1){ ;this is a feature barely anyone uses, but you 
 }
 SendInput, {Esc}
 SetTitleMatchMode, RegEx
-WinWaitActive, ahk_class (AbletonVstPlugClass|Vst3PlugWindow),,8
+
+querynameclean := RegExReplace(queryname, "['""]+", "")
+StringLower, querynameclean, querynameclean
+;msgbox, % querynameclean
+if (querynameclean = "analog" or querynameclean = "collision" or querynameclean = "drum rack" or querynameclean = "electric" or querynameclean = "external instrument" or querynameclean = "impulse" or querynameclean = "instrument rack" or querynameclean = "operator" or querynameclean = "sampler" or querynameclean = "simpler" or querynameclean = "tension" or querynameclean = "wavetable") or (querynameclean = "amp") or (querynameclean = "audio effect rack") or (querynameclean = "auto filter") or (querynameclean = "auto pan") or (querynameclean = "beat repeat") or (querynameclean = "cabinet") or (querynameclean = "chorus") or (querynameclean = "compressor") or (querynameclean = "corpus") or (querynameclean = "drum buss") or (querynameclean = "dynamic tube") or (querynameclean = "echo") or (querynameclean = "eq eight") or (querynameclean = "eq three") or (querynameclean = "erosion") or (querynameclean = "external audio effect") or (querynameclean = "filter delay") or (querynameclean = "flanger") or (querynameclean = "frequency shifter") or (querynameclean = "gate") or (querynameclean = "glue compressor") or (querynameclean = "grain delay") or (querynameclean = "limiter") or (querynameclean = "looper") or (querynameclean = "multiband dynamics") or (querynameclean = "overdrive") or (querynameclean = "pedal") or (querynameclean = "phaser") or (querynameclean = "ping pong delay") or (querynameclean = "redux") or (querynameclean = "resonators") or (querynameclean = "reverb") or (querynameclean = "saturator") or (querynameclean = "simple delay") or (querynameclean = "delay") or (querynameclean = "spectrum") or (querynameclean = "tuner") or (querynameclean = "utility") or (querynameclean = "vinyl distortion") or (querynameclean = "vocoder") or (InStr(querynameclean, ".adv") != 0){
+; I could do this with an array instead but I'm too lazy and this works too so enjoy this 15km 'if' statement
+WinWaitActive, ExcludeText - ExcludeTitle, , 0.5
+return
+}
+else{
+WinWaitActive, ahk_class (AbletonVstPlugClass|Vst3PlugWindow),,12
 WinGetTitle, piss, ahk_class (AbletonVstPlugClass|Vst3PlugWindow)
+}
 if (piss != "") {
 	SetTitleMatchMode, 2
 	WinActivate, Ableton
 	SendInput, {Esc}
+	sleep, 1
 	WinActivate, %piss%
 	}
 Else{
@@ -1581,13 +1596,16 @@ Return
 ;Return
 
 buplicate: ;brought to you by dylan tallchief
-if (A_PriorHotkey != "^b" or A_TimeSincePriorHotkey > 10000 or A_PriorKey = Lbutton)
+if (A_PriorHotkey != "^b" or A_TimeSincePriorHotkey > 1800 or A_PriorKey = Lbutton)
 {
     ; Too much time between presses, so this isn't a double-press.
 send {ctrl down}{d 7}{ctrl up}
 return
 }
 send {ctrl down}{d 8}{ctrl up}
+return
+
+absolutelynothing:
 return
 
 directshyper: ;backup shortcut in case the double right click routine fails someone
@@ -1643,7 +1661,7 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 	}
 }
 else{
-sendinput, {1}
+sendinput, {Blind}{1}
 }
 Return
 
@@ -1681,7 +1699,7 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 	}
 }
 else{
-sendinput, {2}
+sendinput, {Blind}{2}
 }
 Return
 
@@ -1713,7 +1731,7 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 	}
 }
 else{
-sendinput, {3}
+sendinput, {Blind}{3}
 }
 Return
 
@@ -1745,7 +1763,7 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 	}
 }
 else{
-sendinput, {4}
+sendinput, {Blind}{4}
 }
 Return
 
@@ -1765,7 +1783,7 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 	}
 }
 else{
-sendinput, {4}
+sendinput, {Blind}{5}
 }
 Return
 
@@ -1943,10 +1961,6 @@ phaseplantloadmod:
 	mousemove, posX, posY
 Return
 
-phaseplante:
-
-Return
-
 phaseplantl:
 if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWindow")){
 	WinGetTitle, wintitleoutput, A
@@ -2070,7 +2084,7 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 		Return
 	}
 }
-sendinput {ctrl down}{z}{ctrl up}
+sendinput {ctrl down}{y}{ctrl up}
 Return
 
 ;-----------------------------------;
