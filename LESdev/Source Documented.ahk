@@ -1235,9 +1235,11 @@ FileDelete,%A_ScriptDir%/resources/strict.txt
 FileAppend, 1,%A_ScriptDir%/resources/strict.txt
 
 
-if !(WinActive("- Ableton Live ")){
+settitlematchmode, regex
+if !(WinActive("ahk_exe Ableton Live")){
 	SetTimer, Clock, Delete ; deleting a clock that increases the timer when ableton is unfocussed.
 }
+settitlematchmode, 2
 
 }
 Else if (stricton = 1){
