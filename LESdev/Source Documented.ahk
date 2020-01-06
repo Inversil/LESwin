@@ -1247,7 +1247,7 @@ stricton := 0
 FileDelete,%A_ScriptDir%/resources/strict.txt
 FileAppend, 0,%A_ScriptDir%/resources/strict.txt
 Menu, Tray, Uncheck, Strict Time
-if (WinExist("- Ableton Live ") != 0) and (trackname != ""){
+if (WinExist("ahk_exe Ableton Live ") != 0) and (trackname != ""){
 	SetTimer, Clock, 1000 ; creating a clock that increases the timer.
 }
 }
