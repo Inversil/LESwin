@@ -1,3 +1,14 @@
+# Live Enhancement Suite (Captain Hack)
+I love LES, it makes Live so much better. Sadly, after the 1.3 release, I started experiencing side effects from some of the new features.
+So, like any open source software that I can change to suite my needs, I have.
+
+Please note: While this version works great for me, it may totally fail for you.
+
+## Warranty
+I can't gaurantee any other author's work included in this project. I can gaurantee that I personally have not contributed anything malicious.
+To the best of my knowlege this script is safe, but use of it is strictly at your own risk.
+
+## Original Readme
 This is the repository for the source code of the Live Enhancement Suite for Windows.
 
 LES on windows is a compiled ahk script.
