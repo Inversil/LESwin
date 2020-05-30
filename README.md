@@ -2,6 +2,8 @@
 I love LES, it makes Live so much better. Sadly, after the 1.3 release, I started experiencing side effects from some of the new features.
 So, like any open source software that I can change to suite my needs, I have.
 
+As I go, I'll be stripping it down to just the features I use, so don't expect this to mirror the full LES release. Removed functionality can be found in the [Changelog](CHANGELOG.md).
+
 Please note: While this version works great for me, it may totally fail for you.
 
 ## Warranty
