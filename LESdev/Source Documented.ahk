@@ -324,15 +324,8 @@ Loop, Read, %A_ScriptDir%\settings.ini
         addctrlshiftz := result[2]
     }
     
-    if (RegExMatch(line, "0todelete\s=\s") != 0){
-        result := StrSplit(line, "=", A_Space)
-        if !(result[2] = 0 or result[2] = 1){
-            msgbox % "Invalid parameter for " . Chr(34) "0todelete" . Chr(34) . ". Valid parameters are: 1 and 0. The program will shut down now."
-            run, %A_ScriptDir%\settings.ini
-            exitapp
-        }
-        0todelete := result[2]
-    }
+    ; // CPT - 5/29/2020 - remove 0todelete
+    
     
     if (RegExMatch(line, "absolutereplace\s=\s") != 0){
         result := StrSplit(line, "=", A_Space)
@@ -550,9 +543,7 @@ IfMsgBox Yes
             if (addctrlshiftz = 1){
                 Hotkey, ^+z, redo
             }
-            if (0todelete = 1){
-                Hotkey, ~0, double0delet
-            }
+            ; // CPT - 5/29/2020 - remove 0todelete
             if (altgrmarker = 0){
                 Hotkey, RShift & L, quickmarker
             }
@@ -1382,14 +1373,7 @@ IfMsgBox Yes
             }
         Return
         
-        double0delet:
-            if (A_PriorHotkey <> "~0" or A_TimeSincePriorHotkey > 200)
-            {
-                KeyWait, 0
-                return
-            }
-            send {delete}
-        return
+        ; // CPT - 5/29/2020 - remove 0todelete
         
         redo:
             send {ctrl down}{y down}{ctrl up}{y up}
