@@ -645,6 +645,10 @@ Hotkey, ^b, buplicate
 
 Hotkey, ^+h, directshyper
 
+Hotkey, Tab, PianoRoll
+
+Hotkey, LShift & Tab, SessionView
+
 if(vstshortcuts = 1){
 	scaling = 1
 	Hotkey, 1, vst1
@@ -1577,6 +1581,22 @@ Loop %windows%
 ;}
 SetTitleMatchMode, 2
 Return
+
+PianoRoll:
+MouseGetPos,,,guideUnderCursor
+WinGetTitle, WinTitle, ahk_id %guideUnderCursor%
+if(InStr(WinTitle, "Ableton") != 0){
+	send {LShift down}{Tab}{LShift up}
+}
+return
+
+SessionView:
+MouseGetPos,,,guideUnderCursor
+WinGetTitle, WinTitle, ahk_id %guideUnderCursor%
+if(InStr(WinTitle, "Ableton") != 0){
+	send {Tab}
+}
+return
 
 ;safeautomationopen: ;depricated feature
 ;if (pressingshit = 1){
