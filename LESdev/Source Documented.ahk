@@ -503,6 +503,16 @@ Loop, Read, %A_ScriptDir%\settings.ini
 		}
 	addtostartup := result[2]
 	}
+	
+	if (RegExMatch(line, "fliptabfunction\s=\s") != 0){
+		result := StrSplit(line, "=", A_Space)
+		if !(result[2] = 0 or result[2] = 1){
+			msgbox % "Invalid parameter for " . Chr(34) "fliptabfunction" . Chr(34) . ". Valid parameters are: 1 and 0. The program will shut down now."
+			run, %A_ScriptDir%\settings.ini
+			exitapp
+			}
+		fliptabfunction := result[2]
+	}
 }
 
 ; alright, so this section asks the user to update the settings.ini with the one included in the package if some values are missing.
@@ -645,9 +655,10 @@ Hotkey, ^b, buplicate
 
 Hotkey, ^+h, directshyper
 
-Hotkey, Tab, PianoRoll
-
-Hotkey, LShift & Tab, SessionView
+if (fliptabfunction = 1) {
+	Hotkey, Tab, PianoRoll
+	Hotkey, LShift & Tab, SessionView
+}
 
 if(vstshortcuts = 1){
 	scaling = 1
