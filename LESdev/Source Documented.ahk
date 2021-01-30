@@ -2,7 +2,7 @@
  * * * Compile_AHK SETTINGS BEGIN * * *
 
 [AHK2EXE]
-Exe_File=%In_Dir%\Live Enhancement Suite 1.3.exe
+Exe_File=%In_Dir%\Live Enhancement Suite 1.3.2.exe
 Compression=0
 No_UPX=1
 Created_Date=1
@@ -10,13 +10,13 @@ Created_Date=1
 Set_Version_Info=1
 Company_Name=Inverted Silence & Dylan Tallchief
 File_Description=Live Enhancement Suite
-File_Version=0.1.3.0
+File_Version=0.1.3.2
 Inc_File_Version=0
 Internal_Name=Live Enhancement Suite
 Legal_Copyright=© 2019
 Original_Filename=Live Enhancement Suite
 Product_Name=Live Enhancement Suite
-Product_Version=0.1.3.0
+Product_Version=0.1.3.2
 [ICONS]
 Icon_1=%In_Dir%\resources\blueico.ico
 Icon_2=%In_Dir%\resources\blueico.ico
@@ -69,16 +69,17 @@ Menu, Tray, NoStandard
 Menu, Tray, Add, Configure Settings, settingsini
 Menu, Tray, Add, Configure Menu, menuini
 Menu, Tray, Add,
-Menu, Tray, Add, Donate, monatpls
+Menu, Tray, Add, Donate 💲, monatpls
 Menu, Tray, Add,
 Menu, Tray, Add, Strict Time, stricttime
-Menu, Tray, Add, Check Project Time, requesttime
+Menu, Tray, Add, Check Project Time 🕒, requesttime
 Menu, Tray, Add,
-Menu, Tray, Add, Website, website
-Menu, Tray, Add, Manual, Manual
-Menu, Tray, Add, Exit, quitnow
-Menu, Tray, Default, Exit
-Menu, Tray, insert, 9&, Reload, doreload
+Menu, Tray, Add,
+Menu, Tray, Add, Install InsertWhere, InsertWhere
+Menu, Tray, Add, Manual 📖, Manual
+Menu, Tray, Add, Exit ❌, quitnow
+Menu, Tray, Default, Exit ❌
+Menu, Tray, insert, 9&, Reload ⟳️, doreload
 Menu, Tray, insert, 10&, Pause && Suspend, freeze
 
 Random, randomgen, 1, 13 ;these are the random hover quotes
@@ -116,7 +117,7 @@ if (randomgen = 11){
 Menu, Tray, Tip, 1`.2`, Yahoo!
 }
 if (randomgen = 12){
-Menu, Tray, Tip, Now for MacOS!
+Menu, Tray, Tip, Ableton Gratis Saus
 }
 if (randomgen = 13){
 Menu, Tray, Tip, The biggest thing since sliced bread
@@ -138,6 +139,8 @@ Menu, Tray, Check, Strict Time
 ;		  Installation		;
 ;-----------------------------------;
 
+; msgbox, % A_ScriptDir
+
 FileReadLine, OutputVar, %A_ScriptDir%/resources/firstrun.txt, 1
 ;Checks if the first run file exists
 ;If it doesn't exist; this is the first run, so then do a bunch of initialization stuff.
@@ -155,6 +158,14 @@ exitapp
 if InStr(splitPath A_ScriptDir, "Windows\Temp") or InStr(splitPath A_ScriptDir, "\AppData\Local\Temp"){
 MsgBox,48,Live Enhancement Suite, % "You executed LES from within your file extraction software.`nThis placed it inside of a temporary cache folder, which will cause it to be deleted by Windows' cleanup routine.`nPlease extract LES into its own folder before proceeding."
 exitapp
+}
+
+if (RegExMatch(A_ScriptDir, "C:\Program Files") != 0) or (RegExMatch(A_ScriptDir, "C:\Program Files (x86)") != 0) or (RegExMatch(A_ScriptDir, "AppData") != 0){
+	MsgBox,4,Live Enhancement Suite, % "You may have executed LES from within a system folder.`nThis may cause LES to not function properly, as it will not have enough permissions to self-extract in this location.`nAre you sure you want to install LES in this location?`nPlease move this foder to another location to remove this warning."
+	IfMsgBox No
+		{
+		exitapp
+		}
 }
 
 ;this part of the code extracts a bunch of resources from the .exe and puts them in the right spot
@@ -527,8 +538,8 @@ gosub, settingsinibad
 ; I never bothered to make a dynamic settings.ini file updater. Or some UI thing that would make this entire process more convoluted.
 ; Things like LES 1.2 and 1.3 were never supposed to happen so I didn't account for them - these are the crappy workarounds.
 
-if ((dynamicreload = "") or (altgrmarker = "") or (enableclosewindow = "") or (vstshortcuts = "") or (scrollspeed = ""))
-Msgbox, 4, Oops!, % "It seems your settings.ini file is from an older version of LES.`nYou won't be able to use some of the new features added to the settings without restoring your settings.ini file to its default state. It is recommended you make a backup before you do. Reset settings?"
+if ((dynamicreload = "") or (altgrmarker = "") or (enableclosewindow = "") or (vstshortcuts = "") or (scrollspeed = "") or (fliptabfunction = ""))
+Msgbox, 4, Oops!, % "It seems your settings.ini file is from an older version of LES.`nYou won't be able to use some of the new features added to the settings without restoring your settings.ini file to its default state. It is recommended you make a backup before you do. This won't reset your menu. Reset settings?"
 IfMsgBox Yes
 	{
 	FileDelete, %A_ScriptDir%\settings.ini
@@ -606,6 +617,18 @@ RegDelete, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run, Live
 
 SetTimer, watchforopen, 1000
 
+~$MButton Up::
+Critical
+	if (activenaw = 1){
+		if (middleclicktopan = 1){
+			Send {LControl up}{LAlt up}{LButton up}
+		}
+	}
+	else {
+		sendinput {blind}{mbutton up}
+	}
+Return
+
 #IfWinActive ahk_exe Ableton Live.+
 
 
@@ -662,11 +685,6 @@ if (fliptabfunction = 1) {
 
 if(vstshortcuts = 1){
 	scaling = 1
-	Hotkey, 1, vst1
-	Hotkey, 2, vst2
-	Hotkey, 3, vst3
-	Hotkey, 4, vst4
-	Hotkey, 5, vst5
 
 	; depricated phaseplant VST specific shortcuts - the alt key would stick sometimes and that's really annoying.
 	; was mostly a proof of concept anyway
@@ -866,13 +884,15 @@ Return
 ; these are after the double right click routine because it ends the auto execute section of the script.
 ; If they were higher up, the nescesary "Return" would end the auto-execute section of the script early.
 
-MButton:: 
+
+; I moved $Mbutton up:: hotkey to the top of the script to be set before the global #ifwinactive marker
+; this way you will be able to release the mbutton hotkey even when ableton live is not in focus
+; I think this is the cause of the hotkey getting stuck bug (requires some testing)
+$MButton::
+Critical
 	if (middleclicktopan = 1){
 		Send {LControl down}{LAlt down}{LButton down}
-	}
-Return
-MButton Up::
-	if (middleclicktopan = 1){
+		keywait, Mbutton
 		Send {LControl up}{LAlt up}{LButton up}
 	}
 Return
@@ -888,7 +908,7 @@ $WheelDown::
 	}
 Return
 
-$WheelUp::
+$WheelUp:: ;selecta
 	MouseGetPos,,,guideUnderCursor
 	WinGetTitle, WinTitle, ahk_id %guideUnderCursor%
 	if(InStr(WinTitle, "Ableton") != 0){
@@ -1280,8 +1300,19 @@ Suspend, Toggle
 Pause
 Return
 
-website:
-run, https://enhancementsuite.me/
+InsertWhere:
+Msgbox, 4, Live Enhancement Suite, % "InsertWhere is a Max For Live companion device developed by Mat Zo.`nInsertWhere allows you to change the position where plugins are autoinserted after using the LES plugin menu.`nOnce loaded, it will allow you to switch between these settings:`n`n - Autoadd plugins before the one you have selected`n - Autoadd plugins after the the one you have selected`n - Always autoadd plugins at the end of the chain like normal.`n`nDo you want to install the InsertWhere M4L plugin?"
+IfMsgBox Yes
+{
+	Msgbox, 64, Live Enhancement Suite, % "Please select the location where you want LES to extract the InsertWhere companion plugin.`n`nRecommended: Ableton User Library"
+	FileSelectFile, userlibrary, S, C:\Users\%A_UserName%\Documents\Ableton\User Library\InsertWhere.amxd
+	if (userlibrary = ""){
+		return
+	}
+	fileinstall, resources\InsertWhere.amxd, %userlibrary%
+	Msgbox, 64, Live Enhancement Suite, % "Succes!!`nTo activate InsertWhere, place a single instance of the device on the master channel in your project and choose your desired setting.`nFor extra ease of use, include it in your default template.`n`nFor more information on InsertWhere, visit the documentation website linked under the ""Manual 📖"" button in the tray.`n`nThank you Mat Zo for making this amazing device!"
+}
+
 return
 
 manual:
@@ -1347,7 +1378,6 @@ if (ErrorLevel = 1){
 	Return
 }
 If (saveasnewver = 1){
-BlockInput, On
 ClipSaved := ClipboardAll
 clipboard =  ;
 SendInput, {Ctrl down}{a}{Ctrl up}
@@ -1365,7 +1395,6 @@ if (InStr(Stuff, ".als")){
 else {
 	alsfound := 0
 	}
-
 if (Stuff = "Untitled"){ ;safeguard for if the user is trying to do something really unnescesary
 MsgBox, 4, Live Enhancement Suite, Your project name is "Untitled".`nAre you sure you want to save it as a new version?
 	IfMsgBox Yes
@@ -1373,6 +1402,7 @@ MsgBox, 4, Live Enhancement Suite, Your project name is "Untitled".`nAre you sur
 		goto enduntitledcycle
 		}
 	Else{
+	winclose, ahk_class #32770
 	Return
 	}
 }
@@ -1455,7 +1485,6 @@ skipflag := 0
 alphacharatend := 0
 numberstuff =   ;
 stuff =   ;
-Blockinput, Off
 Return
 }
 return
@@ -1654,6 +1683,123 @@ Return
 
 ;-----------------------------------;
 ;		  Plugin specific hotkeys		;
+;-----------------------------------;
+
+VSTundo:
+if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWindow")){
+	WinGetTitle, wintitleoutput, A
+	RegExMatch(wintitleoutput, "FabFilter\sPro-Q\s3|(?=(\/))", piss)
+	if (piss = "FabFilter Pro-Q 3") and (scaling = 1){
+		MouseGetPos, posX, posY
+		WinGetPos, wx, wy, wWidth, wHeight
+		quotient := wWidth/wHeight
+		if (quotient = "1.967914"){ ;mini
+			fraction := 13/30
+		}
+		if (quotient = "1.569444"){ ;small
+			fraction := 12/30
+		}
+		if (quotient = "1.582038"){ ;medium
+			fraction := 12/31
+		}
+		if (quotient = "1.592760"){ ;large
+			fraction := 12/30
+		}
+		if (quotient = "1.602108"){ ;extra large
+			fraction := 12/29
+		}
+		if (fraction = ""){
+			msgbox, % "If you're seeing this, it means that Midas didn't properly think about the way VST plugins deal with scaling at your current display resolution.`nPerhaps you have the plugin (or your OS) set to a custom scaling amount?`nIt is recommended to disable the VST specific shortcuts in the settings.ini if you want to continue to use custom scaling, since they probably won't work right anyway..`n`n this shortcut will temporarily be disabled."
+			scaling := 0
+			Return
+		}
+		yea1 := (wx + (wWidth * fraction))
+		yea2 := (wy + (windowedcompensationpx*(31/48) + 20))
+		Click, %yea1%, %yea2%
+		fraction := ""
+		yea1 := ""
+		yea2 := ""
+		mousemove, posX, posY
+	}
+	
+	RegExMatch(wintitleoutput, "Kick\s2|(?=(\/))", piss)
+	if (piss = "Kick 2") and (scaling = 1){
+		MouseGetPos, posX, posY
+		WinGetPos, wx, wy, wWidth, wHeight
+		yea1 := (wx + (wWidth / 3.40))
+		yea2 := (wy + (windowedcompensationpx*(31/48) + 85))
+		Click, %yea1%, %yea2%
+		yea1 := ""
+		yea2 := ""
+		mousemove, posX, posY
+		Return
+	}
+}
+sendinput {ctrl down}{z}{ctrl up}
+; my own dimension quotients (can be added to later!)
+; mini 1.967914
+; small 1.569444
+; medium 1.582038
+; large 1.592760
+; extra large 1.602108
+Return
+
+VSTredo:
+if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWindow")){
+	WinGetTitle, wintitleoutput, A
+	RegExMatch(wintitleoutput, "FabFilter\sPro-Q\s3|(?=(\/))", piss)
+	if (piss = "FabFilter Pro-Q 3") and (scaling = 1){
+		MouseGetPos, posX, posY
+		WinGetPos, wx, wy, wWidth, wHeight
+		quotient := wWidth/wHeight
+		; MsgBox, % quotient
+		if (quotient = "1.967914"){ ;mini
+			fraction := 14/30
+		}
+		if (quotient = "1.569444"){ ;small
+			fraction := 13/30
+		}
+		if (quotient = "1.582038"){ ;medium
+			fraction := 13/31
+		}
+		if (quotient = "1.592760"){ ;large
+			fraction := 12/28
+		}
+		if (quotient = "1.602108"){ ;extra large
+			fraction := 13/30
+		}
+		if (fraction = ""){
+			msgbox, % "If you're seeing this, it means that Midas didn't properly think about the way Pro-Q deals with scaling at your current display resolution.`nThe command has been disabled to prevent misfired keystrokes.`nPlease contact me on twitter so I can fix the bug!"
+			Hotkey, ~^y, VSTredo, Off
+			Return
+		}
+		yea1 := (wx + (wWidth * fraction))
+		yea2 := (wy + (windowedcompensationpx*(31/48) + 20))
+		Click, %yea1%, %yea2%
+		fraction := ""
+		yea1 := ""
+		yea2 := ""
+		mousemove, posX, posY
+	}
+	
+	RegExMatch(wintitleoutput, "Kick\s2|(?=(\/))", piss)
+	if (piss = "Kick 2") and (scaling = 1){
+		MouseGetPos, posX, posY
+		WinGetPos, wx, wy, wWidth, wHeight
+		yea1 := (wx + (wWidth / 3.19))
+		yea2 := (wy + (windowedcompensationpx*(31/48) + 85))
+		Click, %yea1%, %yea2%
+		yea1 := ""
+		yea2 := ""
+		mousemove, posX, posY
+		Return
+	}
+}
+sendinput {ctrl down}{y}{ctrl up}
+Return
+
+;-----------------------------------;
+;	   depricated vst shortcuts		;
 ;-----------------------------------;
 
 Sylenth:
@@ -2014,119 +2160,6 @@ if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWi
 }
 Return
 
-VSTundo:
-if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWindow")){
-	WinGetTitle, wintitleoutput, A
-	RegExMatch(wintitleoutput, "FabFilter\sPro-Q\s3|(?=(\/))", piss)
-	if (piss = "FabFilter Pro-Q 3") and (scaling = 1){
-		MouseGetPos, posX, posY
-		WinGetPos, wx, wy, wWidth, wHeight
-		quotient := wWidth/wHeight
-		if (quotient = "1.967914"){ ;mini
-			fraction := 13/30
-		}
-		if (quotient = "1.569444"){ ;small
-			fraction := 12/30
-		}
-		if (quotient = "1.582038"){ ;medium
-			fraction := 12/31
-		}
-		if (quotient = "1.592760"){ ;large
-			fraction := 12/30
-		}
-		if (quotient = "1.602108"){ ;extra large
-			fraction := 12/29
-		}
-		if (fraction = ""){
-			msgbox, % "If you're seeing this, it means that Midas didn't properly think about the way VST plugins deal with scaling at your current display resolution.`nPerhaps you have the plugin (or your OS) set to a custom scaling amount?`nIt is recommended to disable the VST specific shortcuts in the settings.ini if you want to continue to use custom scaling, since they probably won't work right anyway..`n`n this shortcut will temporarily be disabled."
-			scaling := 0
-			Return
-		}
-		yea1 := (wx + (wWidth * fraction))
-		yea2 := (wy + (windowedcompensationpx*(31/48) + 20))
-		Click, %yea1%, %yea2%
-		fraction := ""
-		yea1 := ""
-		yea2 := ""
-		mousemove, posX, posY
-	}
-	
-	RegExMatch(wintitleoutput, "Kick\s2|(?=(\/))", piss)
-	if (piss = "Kick 2") and (scaling = 1){
-		MouseGetPos, posX, posY
-		WinGetPos, wx, wy, wWidth, wHeight
-		yea1 := (wx + (wWidth / 3.40))
-		yea2 := (wy + (windowedcompensationpx*(31/48) + 85))
-		Click, %yea1%, %yea2%
-		yea1 := ""
-		yea2 := ""
-		mousemove, posX, posY
-		Return
-	}
-}
-sendinput {ctrl down}{z}{ctrl up}
-; my own dimension quotients (can be added to later!)
-; mini 1.967914
-; small 1.569444
-; medium 1.582038
-; large 1.592760
-; extra large 1.602108
-Return
-
-VSTredo:
-if(WinActive("ahk_class AbletonVstPlugClass") or WinActive("ahk_class Vst3PlugWindow")){
-	WinGetTitle, wintitleoutput, A
-	RegExMatch(wintitleoutput, "FabFilter\sPro-Q\s3|(?=(\/))", piss)
-	if (piss = "FabFilter Pro-Q 3") and (scaling = 1){
-		MouseGetPos, posX, posY
-		WinGetPos, wx, wy, wWidth, wHeight
-		quotient := wWidth/wHeight
-		; MsgBox, % quotient
-		if (quotient = "1.967914"){ ;mini
-			fraction := 14/30
-		}
-		if (quotient = "1.569444"){ ;small
-			fraction := 13/30
-		}
-		if (quotient = "1.582038"){ ;medium
-			fraction := 13/31
-		}
-		if (quotient = "1.592760"){ ;large
-			fraction := 12/28
-		}
-		if (quotient = "1.602108"){ ;extra large
-			fraction := 13/30
-		}
-		if (fraction = ""){
-			msgbox, % "If you're seeing this, it means that Midas didn't properly think about the way Pro-Q deals with scaling at your current display resolution.`nThe command has been disabled to prevent misfired keystrokes.`nPlease contact me on twitter so I can fix the bug!"
-			Hotkey, ~^y, VSTredo, Off
-			Return
-		}
-		yea1 := (wx + (wWidth * fraction))
-		yea2 := (wy + (windowedcompensationpx*(31/48) + 20))
-		Click, %yea1%, %yea2%
-		fraction := ""
-		yea1 := ""
-		yea2 := ""
-		mousemove, posX, posY
-	}
-	
-	RegExMatch(wintitleoutput, "Kick\s2|(?=(\/))", piss)
-	if (piss = "Kick 2") and (scaling = 1){
-		MouseGetPos, posX, posY
-		WinGetPos, wx, wy, wWidth, wHeight
-		yea1 := (wx + (wWidth / 3.19))
-		yea2 := (wy + (windowedcompensationpx*(31/48) + 85))
-		Click, %yea1%, %yea2%
-		yea1 := ""
-		yea2 := ""
-		mousemove, posX, posY
-		Return
-	}
-}
-sendinput {ctrl down}{y}{ctrl up}
-Return
-
 ;-----------------------------------;
 ;		  Cheats/Jokes		;
 ;-----------------------------------;
@@ -2264,13 +2297,14 @@ Return
 ;-----------------------------------;
 
 watchforclose:
+activenaw := 1
 SetTitleMatchMode RegEx
 if (WinActive(ahk_exe "Ableton\sLive.+") = 0){
 ;msgbox, ableton is now offline
     if (smarticon = 1){
     Menu, Tray, NoIcon
     }
-	Send {LControl up}{LAlt up}{LButton up}
+	; Send {LControl up}{LAlt up}{LButton up}
     SetTimer, watchforopen, 1000
     if (stricton = 1){
 		SetTimer, Clock, Delete
@@ -2280,6 +2314,7 @@ if (WinActive(ahk_exe "Ableton\sLive.+") = 0){
 Return
 
 watchforopen:
+activenaw := 0
 SetTitleMatchMode RegEx
 if (WinActive(ahk_exe "Ableton\sLive.+") != 0){
 ;msgbox, ableton is online
