@@ -616,6 +616,7 @@ RegDelete, HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run, Live
 }
 
 SetTimer, watchforopen, 1000
+goto hotkeysmain
 
 ~$MButton Up::
 Critical
@@ -629,8 +630,8 @@ Critical
 	}
 Return
 
+hotkeysmain:
 #IfWinActive ahk_exe Ableton Live.+
-
 
 ;-----------------------------------;
 ;		  Hotkeys main		;
