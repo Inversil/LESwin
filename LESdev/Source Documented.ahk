@@ -1523,10 +1523,17 @@ Return
 cleartracks:
 MouseGetPos,,,guideUnderCursor
 WinGetTitle, WinTitle, ahk_id %guideUnderCursor%
-if(InStr(WinTitle, "Ableton") != 0){
+if(InStr(WinTitle, "Ableton Live 11") != 0){
 	Click, Right
 	sleep, 20
-	SendInput {up 8}{enter}{delete}
+	SendInput {up 9}{enter}
+	sleep, 5
+	sendinput {delete}
+}
+else if(InStr(WinTitle, "Ableton")){
+	Click, Right
+	sleep, 20
+	SendInput {down 12}{enter}{delete}
 }
 Return
 
