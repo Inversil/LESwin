@@ -1302,7 +1302,7 @@ Pause
 Return
 
 InsertWhere:
-Msgbox, 4, Live Enhancement Suite, % "InsertWhere is a Max For Live companion device developed by Mat Zo.`nInsertWhere allows you to change the position where plugins are autoinserted after using the LES plugin menu.`nOnce loaded, it will allow you to switch between these settings:`n`n - Autoadd plugins before the one you have selected`n - Autoadd plugins after the the one you have selected`n - Always autoadd plugins at the end of the chain like normal.`n`nDo you want to install the InsertWhere M4L plugin?"
+Msgbox, 4, Live Enhancement Suite, % "InsertWhere is a Max For Live companion device developed by Mat Zo.`nInsertWhere allows you to change the position where plugins are autoinserted after using the LES plugin menu.`nOnce loaded, it will allow you to switch between these settings:`n`n - Autoadd plugins before the one you have selected`n - Autoadd plugins after the the one you have selected`n - Always autoadd plugins at the end of the chain like normal.`n`nTo activate InsertWhere, place a single instance of the device on the master channel in your project and choose your desired setting.`n`nDo you want to install the InsertWhere M4L plugin?"
 IfMsgBox Yes
 {
 	Msgbox, 64, Live Enhancement Suite, % "Please select the location where you want LES to extract the InsertWhere companion plugin.`n`nRecommended: Ableton User Library"
@@ -1311,7 +1311,7 @@ IfMsgBox Yes
 		return
 	}
 	fileinstall, resources\InsertWhere.amxd, %userlibrary%
-	Msgbox, 64, Live Enhancement Suite, % "Succes!!`nTo activate InsertWhere, place a single instance of the device on the master channel in your project and choose your desired setting.`nFor extra ease of use, include it in your default template.`n`nFor more information on InsertWhere, visit the documentation website linked under the ""Manual 📖"" button in the tray.`n`nThank you Mat Zo for making this amazing device!"
+	Msgbox, 64, Live Enhancement Suite, % "Succes!!`nFor extra ease of use, include InsertWhere in your default template.`n`nFor more information on InsertWhere, visit the documentation website linked under the ""Manual 📖"" button in the tray.`n`nThank you Mat Zo for making this amazing device!"
 }
 
 return
