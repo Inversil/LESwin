@@ -222,7 +222,7 @@ Changed a japanese word in the black midi easter egg joke so it means "death" ra
 --1.3.2--
 depricated the vst shortcuts bound to the number keys.
 Added a button to install InsertWhere, a M4L companion plugin that changes where plugins are inserted. (Thank you Mat Zo!)
-	Hit the "Install InserWhere" to extract the plugin.
+	Hit the "Install InsertWhere" to extract the plugin.
 	To use InsertWhere, place the plugin on your master channel. It will now change the location where plugins are auto inserted.
 	If the location is set to "right", plugins will be autoinserted to the right of the one you have selected, rather than at the end.
 	Set insertwhere to "end" to mimmick default behavior.

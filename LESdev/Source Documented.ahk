@@ -160,7 +160,7 @@ MsgBox,48,Live Enhancement Suite, % "You executed LES from within your file extr
 exitapp
 }
 
-if (RegExMatch(A_ScriptDir, "C:\Program Files") != 0) or (RegExMatch(A_ScriptDir, "C:\Program Files (x86)") != 0) or (RegExMatch(A_ScriptDir, "AppData") != 0){
+if (instr(A_ScriptDir, "C:\Program Files") != 0) or (instr(A_ScriptDir, "C:\Program Files (x86)") != 0) or (instr(A_ScriptDir, "AppData") != 0){
 	MsgBox,4,Live Enhancement Suite, % "You may have executed LES from within a system folder.`nThis may cause LES to not function properly, as it will not have enough permissions to self-extract in this location.`nAre you sure you want to install LES in this location?`nPlease move this foder to another location to remove this warning."
 	IfMsgBox No
 		{
@@ -634,7 +634,7 @@ hotkeysmain:
 #IfWinActive ahk_exe Ableton Live.+
 
 ;-----------------------------------;
-;		  Hotkeys main		;
+;		    Hotkeys main	      	;
 ;-----------------------------------;
 loop, 1{ ;creating hotkeys
 If (disableloop = 1){
